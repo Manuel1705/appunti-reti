@@ -7,3 +7,6 @@
 \contentsline {subsubsection}{\numberline {1.4.2}SSH}{4}{}%
 \contentsline {subsubsection}{\numberline {1.4.3}HTTP}{4}{}%
 \contentsline {subsubsection}{\numberline {1.4.4}Cookies}{9}{}%
+\contentsline {subsubsection}{\numberline {1.4.5}Proxy}{9}{}%
+\contentsline {subsubsection}{\numberline {1.4.6}SMTP}{10}{}%
+\contentsline {subsubsection}{\numberline {1.4.7}DNS}{11}{}%
