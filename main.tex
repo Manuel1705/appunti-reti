@@ -195,12 +195,97 @@ Content-Length: 6821
 Content-Type: text/html
 (data data data data data ...)
 \end{verbatim}
+\subsubsection{Cookies}
+I server HTTP sono stateless, ovvero non mantengono informazioni sulle richieste precedenti.
+I cookies sono un meccanismo che permette ai server HTTP di mantenere informazioni sulle richieste precedenti.
+Un cookie è un token digitale che il server una ser identificare un utente.
+Un cookie viene creato dal server ed inviato al client.
+La tecnologia dei cookie utilizza 4 componenti principali:
+\begin{itemize}
+    \item un set-cookie header nel messaggio di risposta HTTP
+    \item un cookie header nel messaggio di richiesta HTTP
+    \item un file di cookie mantenuto dal browser
+    \item un back-end database sul server
+\end{itemize}
+\subsubsection{Proxy}
+Una Web cache anche chiamato proxy server è un server che mantiene copie di pagine web recentemente richieste.
+Quando un client richiede una pagina web, il proxy server controlla se ha una copia della pagina web.
+Se il proxy server ha una copia della pagina web, invia la copia al client.
+Se il proxy server non ha una copia della pagina web, il proxy server richiede la pagina web al server originale, invia la copia al client e mantiene una copia per le richieste future.
+Il proxy server può essere utilizzato per:
+\begin{itemize}
+    \item ridurre il tempo di risposta per le richieste HTTP
+    \item ridurre il traffico sulla rete
+    \item ridurre il traffico sul server originale
+    \item filtrare i contenuti
+    \item tracciare le attività degli utenti 
+    \item mascherare i server originale
+\end{itemize}
+La copia della pagina web mantenuta dal proxy server potrebbe essere obsoleta.
+Per questo motivo il proxy server deve controllare se la copia è ancora valida.
+Per controllare se la copia è ancora valida il proxy server invia una richiesta HTTP conditional GET al server originale con un if-modified-since nell'header.
+Se la copia è ancora valida il server originale risponde con un not modified status code.
+Se la copia non è più valida il server originale risponde con un ok status code e invia la nuova copia al proxy server.
+Il caching può essere fatto anche dal client nel browser.
 
+\subsubsection{SMTP}
+Simple Mail Transfer Protocol è un protocollo che permette di inviare e ricevere email.
+Ci sono due tipi di agenti:
+\begin{itemize}
+    \item User Agent che permette di comporre, leggere e inviare email (es Outlook, Thunderbird, etc.)
+    \item Mail Server che permette di ricevere, inoltrare e consegnare email
+\end{itemize}
+Il protocollo SMTP è un protocollo client-server che utilizza la connessione TCP sulla porta 25.
+Per prima cosa il client crea una connessione TCP con il server sulla porta 25.
+Il server ed il client eseguono la procedura three-way handshake per stabilire la connessione TCP.
+Per ottenere le mail dal server abbiamo bisogno si un protocollo di accesso alle email.
+I protocolli di accesso alle email sono:
+\begin{itemize}
+    \item POP3 Post Office Protocol version 3
+    \item IMAP Internet Mail Access Protocol
+    \item HTTP
+\end{itemize}
+POP3 è un protocollo client-server che utilizza la connessione TCP sulla porta 110.
+con POP3 le email vengono scaricate dal server e salvate sul client.
+IMAP è un protocollo client-server che utilizza la connessione TCP sulla porta 143.
+Con IMAP le email rimangono sul server e vengono scaricate dal client quando necessario.
+Inoltre IMAP permette di organizzare le email in cartelle, di fare ricerche ecc.
+HTTP è un protocollo client-server che utilizza la connessione TCP sulla porta 80.
 
-
-
-
-
+\subsubsection{DNS}
+Il Domain Name System è un protocollo di applicazione che permette di mappare un nome di dominio ad un indirizzo IP.
+Il DNS è un protocollo client-server che utilizza la connessione UDP sulla porta 53.
+Ad esempio se il browser vuole accedere a \texttt{www.someSchool.edu/index.html} invia una richiesta DNS al server DNS.
+Il browser estrae il nome dell'host \texttt{www.someSchool.edu} dal URL e lo utilizza  nella come parametro nella funzione gethosybyname() in C/C++ per ottenere l'indirizzo IP dell'host. All'invocazione della funzione avvengono i seguenti passaggi:
+\begin{enumerate}
+    \item Il DNS Client manda una query UDP al server DNS sulla porta 53 contenente il nome dell'host.
+    \item Il DNS Client riceve una risposta UDP dal server DNS contenente l'indirizzo IP dell'host.
+\end{enumerate}
+Una volta che il browser ha l'indirizzo IP dell'host può inviare una richiesta HTTP al server HTTP alla porta 80.
+Il DNS è un protocollo distribuito, ovvero non c'è un server DNS centrale.
+Il DNS è un protocollo gerarchico, ovvero i server DNS sono organizzati in una gerarchia.
+Ci sono 3 tipi di server DNS:
+\begin{itemize}
+    \item root DNS server
+    \item top-level domain DNS server
+    \item authoritative DNS server
+\end{itemize}
+Quando un client DNS vuole un indirizzo IP invia una richiesta al server DNS root.
+Il server DNS root risponde con l'indirizzo IP del server DNS top-level domain appropriato (es .edu, .com, .it, etc.).
+Il client DNS invia una richiesta al server DNS top-level domain.
+Il server DNS top-level domain risponde con l'indirizzo IP del server DNS authoritative appropriato (es someSchool.edu).
+Il client DNS invia una richiesta al server DNS authoritative.
+Il server DNS authoritative risponde con l'indirizzo IP dell'host.
+Esiste un altro tipo di server DNS chiamato local DNS server.
+Tipicamente il local DNS server è gestito dal provider di servizi internet ISP.
+Il local DNS server mantiene una cache delle richieste DNS recenti come un proxy server.
+I DNS server offrono anche un servizio di aliasing, ovvero permettono di associare un nome di dominio ad un altro nome di dominio così da avere un indirizzo ip associato a più nomi di dominio.
+I DNS server dato un indirizzo IP permettono di ottenere il nome o nomi di dominio associati.
+Un DNS server può essere utilizzato per applicare la load distribution, ovvero per distribuire il carico tra più server.
+Siti molto grandi come Google, Facebook, Amazon, etc. hanno molti server.
+Per distribuire il carico tra i server questi siti utilizzano un DNS server che mappa un nome di dominio ad un insieme di indirizzi IP.
+Quando un client invia una richiesta DNS al server DNS, il server DNS risponde con un indirizzo IP scelto tra quelli disponibili.
+In questo modo il carico viene distribuito tra i server.
 
 
 
