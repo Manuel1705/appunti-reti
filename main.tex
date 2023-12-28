@@ -1,0 +1,207 @@
+\documentclass[12pt]{article}
+\usepackage{graphicx}
+\begin{document}
+\tableofcontents
+\section{Application layer}
+\subsection{Client-server model}
+In un client server model i nodi sono omogenei e il servizio è offerto da un server sempre attivo che comunica con tutti i client. 
+I clients non comunicano direttamente tra loro ma c'è un server con in indirizzo IP fissato noto a tutti, così che i clients possono sempre contattarlo per ottenere il servizio. 
+Spesso per gestire numerosi client vengono utilizzati più server anche se per il client è come se ci fosse un solo server.
+Un applicazione web è un tipico esempio di client server model.
+
+\subsection{P2P Peer-to-peer model}
+In un P2P model i nodi sono idealmente omogenei e l'applicazione sfrutta la comunicazione tra coppie di host.
+Applicazioni P2P vengono utilizzate in caso di traffico molto elevato.
+Applicazioni puramente P2P sono rare, spesso si utilizza un modello ibrido tra client server e P2P. 
+Un esempio è Skype che utilizza un server per la registrazione e per la ricerca di utenti, ma la comunicazione avviene direttamente tra i client.
+Architetture P2P sono scalabili, distribuite e più economiche, ma sono più complesse da gestire e non sono sempre efficienti.
+
+\subsection{Comunicazione tra Processi}
+In un applicazione di rete la comunicazione avviene tra processi, ovvero tra programmi che girano su host diversi. 
+Tra due processi comunicanti tipicamente che un processo client ed un processo server.
+In un applicazione P2P i processo potrebbero cambiare ruolo.
+Un socket è un interfaccia software che permette al processo di inviare e ricevere messaggi attraverso la rete.
+Considerando lo stack TCP/IP, un socket è un interfaccia tra il livello applicazione ed il livello di trasporto.
+I socket vengono utilizzati come API Application Programming Interface tra l'applicazione e la rete.
+Lo sviluppatore può controllare tutto al livello applicazione ma molto poco allivello di trasporto.
+L'unico controllo che ha è la scelta del protocollo di trasporto, TCP o UDP e forse la possibilità di impostare qualche parametro come la grandezza massima del buffer e del segment.
+Nella rete un host viene identificato da un indirizzo IP, mentre un processo viene identificato da un numero di porta.
+Alcune porte per convenzione sono riservate a determinati servizi, ad esempio la porta 80 è riservata al servizio web e la porta 25 al servizio di posta elettronica.
+\subsection{Protocolli applicativi}
+I protocolli del livello applicazione definiscono come i processi comunicano tra loro, ovvero il formato dei messaggi scambiati e le azioni da intraprendere quando si riceve un messaggio. 
+In particolare devono definiti:
+\begin{itemize}
+    \item il tipo di messaggio scambiato
+    \item la sintassi dei campi del messaggio
+    \item la semantica dei campi del messaggio
+    \item le regole per determinare quando e come un processo invia e riceve messaggi
+\end{itemize}
+Ci sono numerosi protocolli applicativi, alcuni dei quali sono:
+\begin{itemize}
+    \item HTTP/HTTPS HyperText Transfer Protocol / Secure
+    \item FTP/FTPS File Transfer Protocol / Secure
+    \item SMTP/SMTPS Simple Mail Transfer Protocol / Secure
+    \item DNS Domain Name System
+    \item DHCP Dynamic Host Configuration Protocol
+    \item Telnet/SSH Telephony Network / Secure Shell
+    \item SNMP Simple Network Management Protocol
+\end{itemize}
+\subsubsection{FTP}
+FTP è uno dei protocolli più vecchio è permette il trasferimento di file tra host attraverso la rete.
+Nella versione originale FTP è un protocollo non sicuro, ovvero non cripta i dati scambiati.
+Mentre la versione sicura FTPS utilizza SSL/TLS per criptare i dati.
+Entrambe le versioni hanno due componenti principali:
+\begin{itemize}
+    \item il protocollo che specifica i comandi (show, get, put, delete, etc.)
+    \item un applicazione software che implementi il protocollo (client-side e server-side)
+\end{itemize}
+\includegraphics[scale=.3]{img/ftp-commands.png}
+
+\subsubsection{SSH}
+Telnet Telephony Network è un protocollo che permette di accedere ad un host remoto e di controllarlo come se si fosse fisicamente davanti ad esso.
+Il problema è che Telnet è un protocollo non sicuro, ovvero non cripta i dati scambiati.
+Per questo motivo è stato creato SSH Secure Shell che è un protocollo sicuro che utilizza SSL/TLS per criptare i dati.
+Entrambe le versioni hanno due componenti principali:
+\begin{itemize}
+    \item il protocollo che specifica come i messaggi sono strutturati e come vengono scambiati
+    \item un applicazione software che implementi il protocollo (client-side e server-side)
+\end{itemize}
+
+\subsubsection{HTTP}
+Il World Wide Web WWW è un servizio che permette di accedere a documenti ipertestuali attraverso la rete.
+Per accedere al WWW si utilizza il protocollo HTTP HyperText Transfer Protocol.
+La comunicazione HTTP avviene tra un client ed un server.
+Il client è un programma che invia richieste HTTP ad un server.
+Il server è un programma che riceve le richieste HTTP ed invia una risposta HTTP.
+Il protocollo HTTP definisce come i messaggi sono strutturati e come vengono scambiati.
+HTTP è un protocollo non sicuro, ovvero non cripta i dati scambiati.
+Per questo motivo è stato creato HTTPS che è un protocollo sicuro che utilizza SSL/TLS per criptare i dati.
+Le informazioni nel web sono chiamate risorse e sono identificate da un URL Uniform Resource Locator, ovvero una stringa composta come segue:
+\begin{verbatim}
+[protocol]://[usrinfo@][host][:port][/path][?query][#fragment]
+\end{verbatim}
+\begin{itemize}
+    \item protocol: protocollo di trasporto utilizzato (HTTP, HTTPS, FTP, etc.)
+    \item usrinfo: nome utente e password per l'autenticazione (non più utilizzato per motivi di sicurezza)
+    \item host: nome o indirizzo IP del server
+    \item port: numero di porta utilizzato (spesso omesso perché dedotto dal protocollo)
+    \item path: percorso della risorsa sul server
+    \item query: preceduto da ?, specifica possibili richieste
+    \item fragment: preceduto da \#, specifica un elemento della risorsa
+\end{itemize}
+Una pagina web contenete un HTML file e 5 immagini JPEG ha 6 oggetti diversi.
+Il browser invia una richiesta HTTP per ogni oggetto.
+Il server invia una risposta HTTP per ogni oggetto.
+Il browser assembla i pezzi ricevuti e mostra la pagina web.
+HTTP usa TCP come protocollo di trasporto.
+Il client apre una connessione TCP con il server. Una volta che la connessione è stabilita il processo browser e quello server accedono a TCP attraverso un socket.
+Il client invia una richiesta HTTP al server attraverso il socket e riceve una risposta HTTP dal server attraverso lo stesso socket. Allo stesso modo il server riceve la richiesta HTTP dal client attraverso il socket e invia la risposta HTTP attraverso lo stesso socket.
+Uno dei motivi per cui HTTP usa TCP come protocollo di trasporto è che HTTP è un protocollo affidabile, ovvero garantisce che i dati inviati dal client al server arrivino correttamente e nello stesso ordine in cui sono stati inviati.
+Le applicazioni HTTP delegando a TCP il compito di garantire l'affidabilità possono essere più semplici.
+Per una applicazione HTTP essere semplice è molto importante perché gli permette di essere più veloce e più robusta gestendo numerose richiesta al secondo.
+Le applicazioni HTTP sono generalmente stateless, ovvero non mantengono informazioni sulle richieste precedenti. Non tutte le applicazioni sono stateless, alcune applicazioni sono stateful, ovvero mantengono informazioni sulle richieste precedenti.
+Il modo in cui la pagina web viene mostrata al client dipende dal tipo di browser utilizzato. Il protocollo HTTP definisce soltanto come i messaggi sono strutturati e come vengono scambiati, non definisce come la pagina web deve essere mostrata al client.
+In molte applicazioni web il client ed il server comunicano per un periodo esteso di tempo, inviando e ricevendo messaggi in sequenza.
+Quando utilizziamo una connessione TCP possiamo avere due tipi di connessione: persistente e non persistente.
+Una connessione persistente è una connessione TCP che viene riutilizzata per più di una richiesta HTTP.
+Una connessione non persistente è una connessione TCP che viene utilizzata per una sola richiesta HTTP.
+Siccome la connessione non persiste tra una richiesta e l'altra c'è bisogno di tante connessione TCP per scaricare l'intera pagina web.
+La connessione avviene come segue:
+\begin{enumerate}
+    \item Il processo client HTTP inizia una connessione TCP con il server \texttt{www.someSchool.edu} sulla porta numero 80 (default per HTTP), avremo quindi due socket: uno nel client e uno nel server.a
+    \item Il client HTTP invia un messaggio di richiesta HTTP al server tramite il suo socket, includendo il nome del percorso \texttt{/someDepartment/home.index}.
+    \item Il processo server HTTP riceve il messaggio di richiesta tramite il suo socket, recupera l'oggetto \texttt{/someDepartment/home.index} (da RAM o disco), incapsula l'oggetto in un messaggio di risposta HTTP e invia indietro il messaggio di risposta al client tramite il suo socket.
+    \item Il processo server HTTP dice a TCP di chiudere la connessione TCP; il TCP (più tardi) terminerà la connessione una volta che è sicuro che il client ha ricevuto il messaggio di risposta intatto (affidabilità).
+    \item Il client HTTP riceve il messaggio di risposta. La connessione TCP termina. Il messaggio indica che l'oggetto incapsulato è un file HTML. Il client estrae il file dal messaggio di risposta, esamina il file HTML e trova riferimenti ai 10 oggetti JPEG.
+    \item I primi quattro passaggi vengono quindi ripetuti per ciascuno degli oggetti JPEG referenziati.
+\end{enumerate}
+Le diverse connessione possono essere aperte in sequenza o in parallelo.
+Nonostante il parallelismo, creare tante connessioni TCP è molto costoso in termini di tempo e risorse.
+È difficile stimare precisamente i tempi di una richiesta HTTP.
+Una possibile stima può essere fatta in termini di RTTs round-trip times, ovvero il tempo che impiega un pacchetto per andare dal client al server e ritornare indietro.
+Le connessioni TCP sono garantite (connection-oriented) grazie al three-way handshake.
+Il three-way handshake è una procedura che permette di stabilire una connessione TCP tra due host attraverso 3 passaggi:
+\begin{enumerate}
+    \item il client invia un piccolo segmento TCP al server per segnalare la richiesta di connessione.
+    \item il server risponde con un piccolo segmento TCP per segnalare l'accettazione della richiesta di connessione.
+    \item il client invia un piccolo segmento TCP per confermare l'accettazione della richiesta di connessione.
+\end{enumerate}
+Per terminare la procedura servono 2 RTTs. La stessa procedura viene utilizzata per terminare la connessione.
+Se la connessione è persistente, il client può inviare più richieste HTTP attraverso la stessa connessione TCP.
+In questo modo si riduce il numero di RTTs necessari per scaricare la pagina web.
+Se la connessione è non persistente, il client deve aprire una nuova connessione TCP per ogni richiesta HTTP e quindi il numero di RTTs necessari per scaricare la pagina web aumenta.
+Quando utilizziamo una connessione persistente possiamo inviare le richieste in pipeline, ovvero possiamo inviare una nuova richiesta HTTP prima di aver ricevuto la risposta alla richiesta precedente.
+Nel protocollo HTTP abbiamo due formati diversi per i messaggi di richiesta e di risposta.
+Il formato dei messaggi di richiesta HTTP è il seguente:
+\begin{verbatim}
+    <method> <URL> <version>
+    <headers>
+    <body>
+\end{verbatim}
+\begin{itemize}
+    \item method: tipo di richiesta (GET, POST, HEAD, PUT, DELETE, etc.)
+    \item URL: Uniform Resource Locator
+    \item version: versione del protocollo HTTP (HTTP/1.1)
+    \item headers: parametri della richiesta (es persistent o non persistent connection)
+    \item body: dipende dal tipo di richiesta (per GET è vuoto), contiene i dati utilizzati dal metodo.
+\end{itemize}
+Il metodo GET è il più utilizzato e permette di richiedere una risorsa.
+\begin{verbatim}
+GET /somedir/page.html HTTP/1.1
+Host: www.someschool.edu
+Connection: close
+User-agent: Mozilla/5.0
+Accept-language: fr
+\end{verbatim}
+Il metodo POST permette di inviare dati al server.
+Il metodo HEAD è simile a GET ma il server risponde soltanto con l'header della risposta. Viene utilizzato per testare l'esistenza di una risorsa.
+Il metodo PUT permette di caricare una pagina web sul server.
+Il metodo DELETE permette di cancellare una pagina web dal server.
+Il formato dei messaggi di risposta HTTP è il seguente:
+\begin{verbatim}
+    <version> <status-code> <reason-phrase>
+    <headers>
+    <body>
+\end{verbatim}
+\begin{itemize}
+    \item version: versione del protocollo HTTP
+    \item status: codice di stato (200 OK, 301 Moved Permanently, 400 Bad Request, 404 Not Found, 505 HTTP Version Not Supported, etc.)
+    \item reason-phrase: descrizione del codice di stato
+\end{itemize}
+Status codes sono divisi in classi:
+\begin{itemize}
+    \item 100-199: informational (richiesta ricevuta, processo in corso, etc.)
+    \item 200-299: successful
+    \item 300-399: redirection (ci sono azioni da intraprendere da parte dell'utente per completare la richiesta)
+    \item 400-499: client error (richiesta non valida)
+    \item 500-599: server error (server non riesce a soddisfare la richiesta)
+\end{itemize}
+Alcuni esempi di status codes sono:
+\begin{itemize}
+    \item 200 OK: richiesta soddisfatta
+    \item 301 Moved Permanently: la risorsa è stata spostata in un'altra locazione
+    \item 400 Bad Request: richiesta non valida
+    \item 404 Not Found: la risorsa non è stata trovata
+    \item 505 HTTP Version Not Supported: la versione del protocollo HTTP non è supportata
+\end{itemize}
+Esempio di risposta HTTP:
+\begin{verbatim}
+HTTP/1.1 200 OK
+Connection: close
+Date: Tue, 18 Aug 2015 15:44:04 GMT
+Server: Apache/2.2.3 (CentOS)
+Last-Modified: Tue, 18 Aug 2015 15:11:03 GMT
+Content-Length: 6821
+Content-Type: text/html
+(data data data data data ...)
+\end{verbatim}
+
+
+
+
+
+
+
+
+
+    \end{document}
