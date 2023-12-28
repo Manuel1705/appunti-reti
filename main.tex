@@ -287,6 +287,25 @@ Per distribuire il carico tra i server questi siti utilizzano un DNS server che 
 Quando un client invia una richiesta DNS al server DNS, il server DNS risponde con un indirizzo IP scelto tra quelli disponibili.
 In questo modo il carico viene distribuito tra i server.
 
+\subsubsection{Torrent}
+Uno degli utilizzi di un applicazione P2P è la condivisione di file.
+Un protocollo P2P per la condivisione di file è BitTorrent.
+Un Torrent è una collezione di peers che partecipano alla condivisione di un file.
+Peers in un torrent scaricano chunks di dimensione fissa da altri peers e li inviano ad altri peers.
+Quando un peer entra in un torrent non ha nessun chunk, quindi inizia scaricando un chunk da un peer che ha quel chunk.
+Una volta che ha scaricato un chunk lo invia ad altri peer che non hanno quel chunk.
+Un peer appena entrato si registra presso un tracker che mantiene una lista di peers che partecipano al torrent.
+Il tracker risponde al peer con una lista di peers da cui ottenere chunks.
+Il peer si connette ai peers della lista e inizia a scaricare chunks.
+Ogni peer puo uscire e rientrare nel torrent in qualsiasi momento.
+Un peer si collega agli altri peer attraverso un socket TCP.
+Un peer può avere più connessioni TCP contemporaneamente.
+Per la scelta dei chunks da scaricare un peer utilizza un algoritmo chiamato rarest first.
+L'algoritmo rarest first sceglie i chunks che sono posseduti da meno peers.
+In questo modo si cerca di massimizzare la disponibilità dei chunks.
+Per la scelta dei chunks da caricare si possono usare due algoritmi:
+Trading: il peer da priorità hai 4 vicini che stanno caricando più chunks, con aggiornamenti ogni 10 secondi.
+Random selection: ogni 30 secondi il peer sceglie 4 vicini a caso.
 
 
-    \end{document}
+\end{document}
